@@ -9,9 +9,9 @@ public class GeocodingService {
 
     private static final String API_KEY = "";
     //http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
-    private static final String GEOCODING_API_URL = "http://api.openweathermap.org/geo/1.0/direct?q=";
+    private static final String GEOCODING_API_URL = "http://api.openweathermap.org/geo/1.0/direct?";
 
-    public String getCoordinates(String cityName, String stateCode, String countryCode) {
+    public String getCoordinates(String cityName, String countryCode) {
         // Construcción de la URL con los parámetros
         String url = UriComponentsBuilder.fromHttpUrl(GEOCODING_API_URL)
                 .queryParam("q", cityName + "," + countryCode) // Construye el query con los datos
@@ -20,6 +20,7 @@ public class GeocodingService {
                 .toUriString();
 
         RestTemplate restTemplate = new RestTemplate();
+        System.out.println("LLega");
         return restTemplate.getForObject(url, String.class);
     }
 }
