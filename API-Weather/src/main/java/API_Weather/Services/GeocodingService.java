@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class GeocodingService {
 //http://localhost:8080/weather/Cordoba/Ar
-    private static final String API_KEY = "c18488caf02574af00baec306dbcf5c3";
+    private static final String API_KEY = "";
     //http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
     private static final String GEOCODING_API_URL = "http://api.openweathermap.org/geo/1.0/direct?";
 
