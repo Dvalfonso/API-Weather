@@ -14,11 +14,11 @@ import java.util.List;
 @Service
 public class GeocodingService {
 //http://localhost:8080/weather/Cordoba/Ar
-    private static final String API_KEY = "";
+    private static final String API_KEY = "c18488caf02574af00baec306dbcf5c3";
     //http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
     private static final String GEOCODING_API_URL = "http://api.openweathermap.org/geo/1.0/direct?";
 
-    private static final String MAIN_API_URL = "https://api.openweathermap.org/data/3.0/onecall?";
+    private static final String CURRENT_WEATHER_API = "https://api.openweathermap.org/data/2.5/weather?";
 
     private String getCoordinates(String cityName, String countryCode) {
         String url = UriComponentsBuilder.fromHttpUrl(GEOCODING_API_URL)
@@ -59,12 +59,15 @@ public class GeocodingService {
      */
     private String getWeather(double lat, double lon) {
         //https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
-        String url = UriComponentsBuilder.fromHttpUrl(MAIN_API_URL)
+        String url = UriComponentsBuilder.fromHttpUrl(CURRENT_WEATHER_API)
                 .queryParam("lat", lat)
                 .queryParam("lon", lon)
                 .queryParam("appid", API_KEY)
                 .toUriString();
 
-        return url;
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        System.out.println(response.getBody());
+        return response.getBody().toString();
     }
 }
