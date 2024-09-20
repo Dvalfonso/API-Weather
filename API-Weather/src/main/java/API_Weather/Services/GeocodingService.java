@@ -2,6 +2,7 @@ package API_Weather.Services;
 
 import API_Weather.entities.GeocodingResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,29 +15,44 @@ import java.util.List;
 @Service
 public class GeocodingService {
 //http://localhost:8080/weather/Cordoba/Ar
-    private static final String API_KEY = "c18488caf02574af00baec306dbcf5c3";
+    private static final String API_KEY = "";
     //http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
     private static final String GEOCODING_API_URL = "http://api.openweathermap.org/geo/1.0/direct?";
 
     private static final String CURRENT_WEATHER_API = "https://api.openweathermap.org/data/2.5/weather?";
 
     private String getCoordinates(String cityName, String countryCode) {
+        String name = cityName;
+        if (cityName.contains("%20")) {
+            name = cityName.replace("%20", " ");
+        }
+
         String url = UriComponentsBuilder.fromHttpUrl(GEOCODING_API_URL)
-                .queryParam("q", cityName + "," + countryCode)
+                .queryParam("q", name + "," + countryCode)
                 .queryParam("limit", 1)
                 .queryParam("appid", API_KEY)
                 .toUriString();
 
-
+        System.out.println("Url coordinates: " + url);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        System.out.println("HTTP Status Code: " + response.getStatusCode());
+        System.out.println("Response Headers: " + response.getHeaders());
+        System.out.println("Response Body: " + response.getBody());
+        System.out.println("Response Body: " + response.getBody());  // Esto debe mostrar el JSON completo
+
         return response.getBody().toString();
+
     }
 
     public String getWeatherFromCity(String cityName, String countryCode) {
-        String jsonString = getCoordinates(cityName, countryCode);
-        ObjectMapper objectMapper = new ObjectMapper();
+        String name = cityName;
+        if (cityName.contains("%20")) {
+            name = cityName.replace("%20", " ");
+        }
 
+        String jsonString = getCoordinates(name, countryCode);
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
             List<GeocodingResponse> responseList = objectMapper.readValue(jsonString, new TypeReference<List<GeocodingResponse>>() {});
 
@@ -67,7 +83,6 @@ public class GeocodingService {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        System.out.println(response.getBody());
         return response.getBody().toString();
     }
 }
