@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 
-@JsonIgnoreProperties({"local_names"})
+@JsonIgnoreProperties({"local_names", "state"})
 @Data
 public class GeocodingResponse {
     private String name;
