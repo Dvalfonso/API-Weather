@@ -21,23 +21,8 @@ public class WeatherService {
     private static final String CURRENT_WEATHER_API = "https://api.openweathermap.org/data/2.5/weather?";
 
     public String getWeatherFromCity(String cityName, String countryCode) {
-        String jsonString = geocodingService.getCoordinates(cityName, countryCode);
-        System.out.println(jsonString);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            List<GeocodingResponse> responseList = objectMapper.readValue(jsonString, new TypeReference<List<GeocodingResponse>>() {});
-            if (!responseList.isEmpty()) {
-                GeocodingResponse response = responseList.get(0);
-                double lat = response.getLat();
-                double lon = response.getLon();
-                return getWeather(lat, lon);
-            } else {
-                System.out.println("No results found.");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "Errorrrrrrrrr";
+        String coordinatesJson = geocodingService.getCoordinates(cityName, countryCode);
+        return "";
     }
 
     /*
@@ -45,14 +30,6 @@ public class WeatherService {
      */
     private String getWeather(double lat, double lon) {
         //https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
-        String url = UriComponentsBuilder.fromHttpUrl(CURRENT_WEATHER_API)
-                .queryParam("lat", lat)
-                .queryParam("lon", lon)
-                .queryParam("appid", API_KEY)
-                .toUriString();
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        return response.getBody().toString();
+        return "";
     }
 }

@@ -1,12 +1,11 @@
 package API_Weather.Services;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
 import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.util.List;
 
 @Service
 public class GeocodingService {
@@ -22,15 +21,19 @@ public class GeocodingService {
                 .queryParam("appid", API_KEY)
                 .toUriString();
 
-        System.out.println("Url coordinates: " + url);
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        System.out.println("HTTP Status Code: " + response.getStatusCode());
-        System.out.println("Response Headers: " + response.getHeaders());
-        System.out.println("Response Body: " + response.getBody());
-        System.out.println("Response Body: " + response.getBody());  // Esto debe mostrar el JSON completo
+        WebClient client = WebClient.create();
 
-        return response.getBody().toString();
+        // Realizar una solicitud GET a un endpoint
+        Mono<String> response = client.get()
+                .uri(uriBuilder -> uriBuilder.path(GEOCODING_API_URL)
+                        .queryParam("q", cityName, countryCode)
+                        .queryParam("appid", API_KEY)
+                        .build())
+                .retrieve()  // Enviar la solicitud y recuperar la respuesta
+                .bodyToMono(String.class);  // Convertir el cuerpo de la respuesta a String
 
+        // Suscribirse al Mono para obtener la respuesta asíncronamente
+        response.subscribe(resp -> System.out.println("Response: " + resp));
+        return response.toString();
     }
 }
