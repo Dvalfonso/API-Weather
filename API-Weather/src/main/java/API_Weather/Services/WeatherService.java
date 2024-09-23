@@ -18,9 +18,6 @@ public class WeatherService {
         return "";
     }
 
-    /*
-     * Conect with the API
-     */
     private String getWeather(double lat, double lon) {
         //https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
         return "";
