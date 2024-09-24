@@ -18,8 +18,7 @@ public class WeatherService {
     @Autowired
     WebClient webClient;
 
-    private static final String API_KEY = "c18488caf02574af00baec306dbcf5c3";
-    private static final String CURRENT_WEATHER_API = "https://api.openweathermap.org/data/2.5/weather?";
+    private static final String API_KEY = "";
 
     public WeatherResponse getWeatherFromCity(String cityName, String countryCode) {
         GeocodingResponse geocodingResponse = geocodingService.getCoordinates(cityName, countryCode);

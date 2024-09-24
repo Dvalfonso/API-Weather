@@ -16,7 +16,7 @@ public class GeocodingService {
     private WebClient webClient;
 
     //http://localhost:8080/weather/city/countryCode
-    private static final String API_KEY = "c18488caf02574af00baec306dbcf5c3";
+    private static final String API_KEY = "";
     //http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
 
     public GeocodingResponse getCoordinates(String cityName, String countryCode) {
